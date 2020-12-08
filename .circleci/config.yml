@@ -1,17 +1,14 @@
-version: 2.1
-
-orbs:
-  maven: circleci/maven@0.0.12
   
-environment:
+dependencies:
+  override:
+    - mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
 
-jobs:
-    build:
-        working_directory: ~/CircleCiAutomation
-        docker:
-            - image: selenium/standalone-chrome-debug:3.141.59-20200525
-        steps:
-            - checkout
-            - run: mvn clean
-            - run: mvn clean test
+test:
+  override:
+    - mvn -o surefire:test
 
+deployment:
+  main:
+    branch: master
+    commands:
+      - mvn -s .circleci.settings.xml -DskipTests deploy
