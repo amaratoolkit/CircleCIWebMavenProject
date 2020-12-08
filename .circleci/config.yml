@@ -2,8 +2,16 @@ version: 2.1
 
 orbs:
   maven: circleci/maven@0.0.12
+  
+environment:
 
-workflows:
-  maven_test:
-    jobs:
-      - maven/test # checkout, build, test, and upload test results
+jobs:
+    build:
+        working_directory: ~/CircleCiAutomation
+        docker:
+            - image: selenium/standalone-chrome-debug:3.141.59-20200525
+        steps:
+            - checkout
+            - run: mvn clean
+            - run: mvn clean test
+
